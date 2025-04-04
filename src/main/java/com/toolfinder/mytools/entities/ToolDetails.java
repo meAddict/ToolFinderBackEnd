@@ -26,8 +26,6 @@ public class ToolDetails {
     @Nonnull
     private String toolName;
     @Nonnull
-    private String toolCategory;
-    @Nonnull
     private String toolDescription;
     @Nonnull
     private String toolPrice;

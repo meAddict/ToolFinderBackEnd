@@ -23,18 +23,18 @@ public class ShopService {
             if (shopDetails.getShopPassword().equals(shopPassword)) {
                 return shopRepository.findByShopEmail(shopEmail);
             } else {
-                return null;
+                throw new Exception("Invalid password");
             }
         } else {
-            return null;
+            throw new Exception("No shops found with the email id. Please Sign up");
         }
     }
     
     public ShopDetails addShop(ShopDetails shopDetails) throws Exception {
-        if (shopRepository.findByShopId(shopDetails.getShopId()) == null) {
+        if (shopRepository.findByShopEmail(shopDetails.getShopEmail()) == null) {
             return shopRepository.save(shopDetails);
         } else {
-            throw new Exception("Shop already exists");
+            throw new Exception("Shop already exists. Please Sign in");
         }
     }
 

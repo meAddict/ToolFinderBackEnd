@@ -21,9 +21,13 @@ public class ToolService {
     
     public void addTool(String shopId, ToolDetails toolDetails) throws Exception {
         if(shopRepository.findByShopId(shopId) != null) {
-            ShopDetails shopDetails = shopRepository.findByShopId(shopId);
-            toolDetails.setShopDetails(shopDetails);
-            toolRepository.save(toolDetails);
+            if (toolRepository.findByToolName(toolDetails.getToolName()) == null && toolRepository.findByToolDescription(toolDetails.getToolDescription()) == null) {  
+                ShopDetails shopDetails = shopRepository.findByShopId(shopId);
+                toolDetails.setShopDetails(shopDetails);
+                toolRepository.save(toolDetails);
+            } else {
+                throw new Exception("Tool already exists in the shop");
+            }
         } else {
             throw new Exception("Shop not found");
         }
