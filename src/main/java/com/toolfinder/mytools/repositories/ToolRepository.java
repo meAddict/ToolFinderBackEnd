@@ -13,7 +13,9 @@ import com.toolfinder.mytools.entities.ToolDetails;
 public interface ToolRepository extends MongoRepository<ToolDetails, String> {
 
     public ToolDetails findByToolId(String toolId);
-    public ToolDetails findByToolName(String toolName);
-    public ToolDetails findByToolDescription(String toolDescription);
+    public List<ToolDetails> findByToolName(String toolName);
+    public List<ToolDetails> findByToolDescription(String toolDescription);
+    public List<ToolDetails> findByToolPrice(String toolPrice);
+    public List<ToolDetails> findByToolImage(String toolImage);
     public List<ToolDetails> findByShopDetails(ShopDetails shopDetails);
 }

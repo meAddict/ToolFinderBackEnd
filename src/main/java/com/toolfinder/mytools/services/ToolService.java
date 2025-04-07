@@ -21,12 +21,21 @@ public class ToolService {
     
     public void addTool(String shopId, ToolDetails toolDetails) throws Exception {
         if(shopRepository.findByShopId(shopId) != null) {
-            if (toolRepository.findByToolName(toolDetails.getToolName()) == null && toolRepository.findByToolDescription(toolDetails.getToolDescription()) == null) {  
+            if (toolRepository.findByToolName(toolDetails.getToolName()) == null) {
                 ShopDetails shopDetails = shopRepository.findByShopId(shopId);
                 toolDetails.setShopDetails(shopDetails);
                 toolRepository.save(toolDetails);
             } else {
-                throw new Exception("Tool already exists in the shop");
+                for (ToolDetails tools : toolRepository.findByToolName(toolDetails.getToolName())) {
+                    if (tools.getShopDetails().getShopId().equals(shopId)) {
+                        throw new Exception("Tool already exists in the shop");
+                    } else {
+                        continue;
+                    }
+                }
+                ShopDetails shopDetails = shopRepository.findByShopId(shopId);
+                toolDetails.setShopDetails(shopDetails);
+                toolRepository.save(toolDetails);
             }
         } else {
             throw new Exception("Shop not found");
@@ -62,7 +71,7 @@ public class ToolService {
             List<ToolDetails> tools = toolRepository.findAll();
             List<ToolDetails> toolsDesired = new ArrayList<>();
             tools.stream().forEach(tool -> {
-                if (tool.getShopDetails().getShopPincode().equals(shopLocation) && tool.getToolName().contains(toolName)) {
+                if (tool.getShopDetails().getShopPincode().equals(shopLocation) && tool.getToolName().toLowerCase().trim().contains(toolName.toLowerCase().trim())) {
                     toolsDesired.add(tool);
                 }
             });
